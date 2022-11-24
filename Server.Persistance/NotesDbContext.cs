@@ -1,12 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Server.Application.Interfaces;
+using Server.Domain;
+using Server.Persistance.EntityTypeConfigurations;
+
 
 namespace Server.Persistance
 {
-    internal class NotesDbContext
+    public class NotesDbContext : DbContext, INotesDbContext
     {
+        public DbSet<Note> Notes { get; set; } 
+
+        public NotesDbContext(DbContextOptions<NotesDbContext> options)
+            : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new NoteConfiguration());
+            base.OnModelCreating(builder);
+        }
     }
 }
