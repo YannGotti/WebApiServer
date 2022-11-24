@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Domain
+﻿namespace Server.Domain
 {
     public class Note
     {
