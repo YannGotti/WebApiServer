@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 
 namespace Server.WebApiNet7.Controllers
@@ -14,6 +13,10 @@ namespace Server.WebApiNet7.Controllers
             _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 
         internal Guid UserId => !User.Identity.IsAuthenticated
+            ? Guid.Empty
+            : Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+        internal Guid AccountId => !User.Identity.IsAuthenticated
             ? Guid.Empty
             : Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 

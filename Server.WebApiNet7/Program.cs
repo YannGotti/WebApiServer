@@ -1,4 +1,5 @@
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyModel;
 using Server.Application;
 using Server.Application.Common.Mappings;
 using Server.Application.Interfaces;
@@ -18,6 +19,7 @@ namespace Server.WebApiNet7
             {
                 config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
                 config.AddProfile(new AssemblyMappingProfile(typeof(INotesDbContext).Assembly));
+                config.AddProfile(new AssemblyMappingProfile(typeof(IAccountsDbContext).Assembly));
             });
 
             services.AddApplication();
@@ -32,20 +34,18 @@ namespace Server.WebApiNet7
                     policy.AllowAnyOrigin();
                 });
             });
-
-
             var app = builder.Build();
+
             using (var scope = app.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
                 try
                 {
-                    var context = serviceProvider.GetRequiredService<NotesDbContext>();
-                    DbInitializer.Initialize(context);
+                    var contextNotes = serviceProvider.GetRequiredService<NotesDbContext>();
+                    DbInitializer.Initialize(contextNotes);
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
             }

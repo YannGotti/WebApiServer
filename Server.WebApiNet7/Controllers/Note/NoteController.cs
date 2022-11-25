@@ -7,7 +7,7 @@ using Server.Application.Notes.Queries.GetNoteDetails;
 using Server.Application.Notes.Queries.GetNoteList;
 using Server.WebApiNet7.Models;
 
-namespace Server.WebApiNet7.Controllers
+namespace Server.WebApiNet7.Controllers.Notes
 {
     [Route("api/[controller]")]
     public class NoteController : BaseController
